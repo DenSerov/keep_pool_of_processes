@@ -1,0 +1,12 @@
+
+for j in {1..1000}
+do
+  prefix=''; chars=abcdefghijklmnopqrstuvwxyz; for i in {1..8};  do prefix+="${chars:RANDOM%${#chars}:1}"; done;
+  declare -a action=('put' 'get' 'delete')
+  a=$(($RANDOM%3+1))
+  declare -i size=$(($RANDOM*8))
+  i=$(($RANDOM%10+1))
+  req=$(($RANDOM%200+1))
+  echo "Bucket: demo$i |  Object size: $SIZE | Operation: ${action[a]} | Prefix: $prefix"
+  s3tester -concurrency=1 -size="$size" -requests="$req" -operation="${action[a]}" -endpoint=$ENDPOINT -region=us-east-1 -prefix=$prefix -bucket=demo$i
+done
